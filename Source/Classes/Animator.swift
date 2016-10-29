@@ -75,7 +75,9 @@ public class Animator {
       let imagePath = Bundle.main.url(forResource: extensionRemoved, withExtension: "gif"),
       let data = try? Data(contentsOf: imagePath) else { return }
 
-    if let completionHandlerPrivate = completionHandler { }
+    if completionHandler != nil {
+        completionHandlerPrivate = completionHandler
+    }
     
     prepareForAnimation(withGIFData: data, size: size, contentMode: contentMode, loopCount: loopCount, completionHandler: completionHandler)
   }
@@ -113,7 +115,9 @@ public class Animator {
 
   /// Stop animating.
   func stopAnimating() {
-    completionHandlerPrivate!()
+    if let handler = completionHandlerPrivate {
+        handler()
+    }
     displayLink.isPaused = true
   }
 

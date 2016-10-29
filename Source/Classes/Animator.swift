@@ -20,6 +20,9 @@ public class Animator {
 
   /// A delegate responsible for displaying the GIF frames.
   private weak var delegate: GIFAnimatable!
+    
+  /// completionHandler
+  private var completionHandlerPrivate : ((Void) -> Void)?
 
   /// Responsible for starting and stopping the animation.
   private lazy var displayLink: CADisplayLink = { [unowned self] in
@@ -46,6 +49,7 @@ public class Animator {
   /// - returns: A new animator instance.
   public init(withDelegate delegate: GIFAnimatable) {
     self.delegate = delegate
+    //completionHandlerPrivate = nil
   }
 
   /// Checks if there is a new frame to display.
@@ -71,6 +75,8 @@ public class Animator {
       let imagePath = Bundle.main.url(forResource: extensionRemoved, withExtension: "gif"),
       let data = try? Data(contentsOf: imagePath) else { return }
 
+    if let completionHandlerPrivate = completionHandler { }
+    
     prepareForAnimation(withGIFData: data, size: size, contentMode: contentMode, loopCount: loopCount, completionHandler: completionHandler)
   }
 
@@ -82,7 +88,7 @@ public class Animator {
   func prepareForAnimation(withGIFData imageData: Data, size: CGSize, contentMode: UIViewContentMode, loopCount: Int = 0, completionHandler: ((Void) -> Void)? = .none) {
     frameStore = FrameStore(data: imageData, size: size, contentMode: contentMode, framePreloadCount: frameBufferCount, loopCount: loopCount)
     frameStore?.shouldResizeFrames = shouldResizeFrames
-    frameStore?.prepareFrames(completionHandler)
+    frameStore?.prepareFrames()
     attachDisplayLink()
   }
 
@@ -107,6 +113,7 @@ public class Animator {
 
   /// Stop animating.
   func stopAnimating() {
+    completionHandlerPrivate!()
     displayLink.isPaused = true
   }
 

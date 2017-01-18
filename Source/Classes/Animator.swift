@@ -70,6 +70,8 @@ public class Animator {
   /// - parameter imageName: The file name of the GIF in the main bundle.
   /// - parameter size: The target size of the individual frames.
   /// - parameter contentMode: The view content mode to use for the individual frames.
+  /// - parameter loopCount: Desired number of loops, <= 0 for infinite loop.
+  /// - parameter completionHandler: Completion callback function
   func prepareForAnimation(withGIFNamed imageName: String, size: CGSize, contentMode: UIViewContentMode, loopCount: Int = 0, completionHandler: ((Void) -> Void)? = .none) {
     guard let extensionRemoved = imageName.components(separatedBy: ".")[safe: 0],
       let imagePath = Bundle.main.url(forResource: extensionRemoved, withExtension: "gif"),
@@ -87,6 +89,8 @@ public class Animator {
   /// - parameter imageData: GIF image data.
   /// - parameter size: The target size of the individual frames.
   /// - parameter contentMode: The view content mode to use for the individual frames.
+  /// - parameter loopCount: Desired number of loops, <= 0 for infinite loop.
+  /// - parameter completionHandler: Completion callback function
   func prepareForAnimation(withGIFData imageData: Data, size: CGSize, contentMode: UIViewContentMode, loopCount: Int = 0, completionHandler: ((Void) -> Void)? = .none) {
     frameStore = FrameStore(data: imageData, size: size, contentMode: contentMode, framePreloadCount: frameBufferCount, loopCount: loopCount)
     frameStore?.shouldResizeFrames = shouldResizeFrames
@@ -126,6 +130,7 @@ public class Animator {
   /// - parameter imageName: The file name of the GIF in the main bundle.
   /// - parameter size: The target size of the individual frames.
   /// - parameter contentMode: The view content mode to use for the individual frames.
+  /// - parameter loopCount: Desired number of loops, <= 0 for infinite loop.
   func animate(withGIFNamed imageName: String, size: CGSize, contentMode: UIViewContentMode, loopCount: Int = 0) {
     prepareForAnimation(withGIFNamed: imageName, size: size, contentMode: contentMode, loopCount: loopCount)
     startAnimating()
@@ -136,6 +141,7 @@ public class Animator {
   /// - parameter imageData: GIF image data.
   /// - parameter size: The target size of the individual frames.
   /// - parameter contentMode: The view content mode to use for the individual frames.
+  /// - parameter loopCount: Desired number of loops, <= 0 for infinite loop.
   func animate(withGIFData imageData: Data, size: CGSize, contentMode: UIViewContentMode, loopCount: Int = 0) {
     prepareForAnimation(withGIFData: imageData, size: size, contentMode: contentMode, loopCount: loopCount)
     startAnimating()

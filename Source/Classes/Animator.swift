@@ -94,7 +94,7 @@ public class Animator {
   func prepareForAnimation(withGIFData imageData: Data, size: CGSize, contentMode: UIViewContentMode, loopCount: Int = 0, completionHandler: ((Void) -> Void)? = .none) {
     frameStore = FrameStore(data: imageData, size: size, contentMode: contentMode, framePreloadCount: frameBufferCount, loopCount: loopCount)
     frameStore?.shouldResizeFrames = shouldResizeFrames
-    frameStore?.prepareFrames(completionHandler)
+    frameStore?.prepareFrames()
     attachDisplayLink()
   }
 

@@ -5,7 +5,7 @@ public class Animator {
   var loopDuration: TimeInterval {
     return frameStore?.loopDuration ?? 0
   }
-    
+
   /// Number of frame to buffer.
   var frameBufferCount = 50
 
@@ -20,6 +20,9 @@ public class Animator {
 
   /// A delegate responsible for displaying the GIF frames.
   private weak var delegate: GIFAnimatable!
+
+  /// completionHandler
+  private var completionHandlerPrivate : ((Void) -> Void)?
 
   /// Responsible for starting and stopping the animation.
   private lazy var displayLink: CADisplayLink = { [unowned self] in
@@ -46,6 +49,7 @@ public class Animator {
   /// - returns: A new animator instance.
   public init(withDelegate delegate: GIFAnimatable) {
     self.delegate = delegate
+    //completionHandlerPrivate = nil
   }
 
   /// Checks if there is a new frame to display.
@@ -55,7 +59,7 @@ public class Animator {
         stopAnimating()
         return
     }
-    
+
     store.shouldChangeFrame(with: displayLink.duration) {
       if $0 { delegate.animatorHasNewFrame() }
     }
@@ -72,6 +76,10 @@ public class Animator {
     guard let extensionRemoved = imageName.components(separatedBy: ".")[safe: 0],
       let imagePath = Bundle.main.url(forResource: extensionRemoved, withExtension: "gif"),
       let data = try? Data(contentsOf: imagePath) else { return }
+
+    if completionHandler != nil {
+        completionHandlerPrivate = completionHandler
+    }
 
     prepareForAnimation(withGIFData: data, size: size, contentMode: contentMode, loopCount: loopCount, completionHandler: completionHandler)
   }
@@ -111,6 +119,9 @@ public class Animator {
 
   /// Stop animating.
   func stopAnimating() {
+    if let handler = completionHandlerPrivate {
+        handler()
+    }
     displayLink.isPaused = true
   }
 

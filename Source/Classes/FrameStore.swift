@@ -114,7 +114,7 @@ class FrameStore {
   /// - parameter index: The index of the duration.
   /// - returns: The duration of the given frame.
   func duration(at index: Int) -> TimeInterval {
-	return animatedFrames[safe: index]?.duration ?? TimeInterval.infinity
+  return animatedFrames[safe: index]?.duration ?? TimeInterval.infinity
   }
 
   /// Checks whether the frame should be changed and calls a handler with the results.
@@ -145,7 +145,7 @@ private extension FrameStore {
   /// - parameter index: The index of the frame to load.
   /// - returns: An optional `UIImage` instance.
   func loadFrame(at index: Int) -> UIImage? {
-    guard let imageRef = CGImageSourceCreateImageAtIndex(imageSource, index, nil) else { return .none }
+    guard let imageRef = CGImageSourceCreateImageAtIndex(imageSource, index, nil) else { return nil }
     let image = UIImage(cgImage: imageRef)
     let scaledImage: UIImage?
 
@@ -242,7 +242,7 @@ private extension FrameStore {
       (0..<frameCount).forEach { index in
           let frameDuration = CGImageFrameDuration(with: imageSource, atIndex: index)
           duration += min(frameDuration, maxTimeStep)
-          animatedFrames += [AnimatedFrame(image: .none, duration: frameDuration)]
+          animatedFrames += [AnimatedFrame(image: nil, duration: frameDuration)]
             
           if index > bufferFrameCount { return }
           animatedFrames[index] = animatedFrames[index].makeAnimatedFrame(with: loadFrame(at: index))

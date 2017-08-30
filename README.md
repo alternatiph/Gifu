@@ -4,7 +4,7 @@
 
 Gifu adds protocol-based, performance-aware animated GIF support to UIKit. (It's also a [prefecture in Japan](https://goo.gl/maps/CCeAc)).
 
-⚠ **Swift 2.3** support is on the [swift2.3](https://github.com/kaishin/Gifu/tree/swift2.3) branch which will not be getting any future updates.
+⚠ The `master` branch works with Xcode 9 and iOS 11, which are both in beta. Use `v2.0` for the stable version.
 
 ## Install
 
@@ -32,7 +32,7 @@ The `Animator` has a `FrameStore` that only keeps a limited number of frames in-
 The figure below summarizes how this works in practice. Given an image
 containing 10 frames, Gifu will load the current frame (red), buffer the next two frames in this example (orange), and empty up all the other frames to free up memory (gray):
 
-<img src="https://db.tt/ZLfx23hg" width="300" />
+<img src="https://github.com/kaishin/Gifu/raw/master/gifu-figure.gif" width="300" />
 
 ## Usage
 
